@@ -30,7 +30,7 @@ reshape size = do
     viewport $= (Position 0 0, size)
 
 renderSquare r (x,y) s = preservingMatrix $ do 
-    renderPrimitive Quads $ vertex2s $ points r
+    renderPrimitive LineLoop $ vertex2s $ points r
     where 
     points r = [((x+0)*r,y+0),((x+s)*r,y+0),((x+s)*r,y+s),((x+0)*r,y+s)]
     
