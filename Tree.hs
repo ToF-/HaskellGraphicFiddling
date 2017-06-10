@@ -1,4 +1,4 @@
-module Tree (Tree, nilTree, mkTree, toList, fromList) where
+module Tree (Tree, nilTree, mkTree, toList, fromList, grow) where
 
 data Tree a = Nil
             | Fork a (Tree a) (Tree a)
@@ -20,5 +20,12 @@ toList (Fork a l r) = a : (toList l) ++ (toList r)
 
 fromList :: [a] -> Tree a
 fromList [] = Nil
-fromList [a] = mkTree a nilTree nilTree
-fromList [a,b,c] = mkTree a (fromList [b]) (fromList [c]) 
+fromList (a:as) = mkTree a (fromList ls) (fromList rs)
+    where 
+    ls = take n as
+    rs = drop n as
+    n  = length as `div` 2
+
+grow :: Int -> a -> (a -> a) -> (a -> a) -> Tree a
+grow 0 a _ _ = Fork a Nil Nil
+grow n a f g = Fork a (grow (n-1) (f a) f g) (grow (n-1) (g a) f g)
