@@ -1,4 +1,4 @@
-module Tree (Tree, nilTree, mkTree, toList, fromList, grow) where
+module Tree (Tree, nil, tree, toList, fromList, grow) where
 
 data Tree a = Nil
             | Fork a (Tree a) (Tree a)
@@ -8,11 +8,11 @@ instance Functor Tree where
     fmap _ Nil = Nil
     fmap f (Fork a l r) = Fork (f a) (fmap f l) (fmap f r)  
 
-nilTree :: Tree a
-nilTree = Nil
+nil :: Tree a
+nil = Nil
 
-mkTree :: a -> Tree a -> Tree a -> Tree a 
-mkTree a l r = Fork a l r
+tree :: a -> Tree a -> Tree a -> Tree a 
+tree a l r = Fork a l r
 
 toList :: Tree a -> [a]
 toList Nil = []
@@ -20,7 +20,7 @@ toList (Fork a l r) = a : (toList l) ++ (toList r)
 
 fromList :: [a] -> Tree a
 fromList [] = Nil
-fromList (a:as) = mkTree a (fromList ls) (fromList rs)
+fromList (a:as) = tree a (fromList ls) (fromList rs)
     where 
     ls = take n as
     rs = drop n as
