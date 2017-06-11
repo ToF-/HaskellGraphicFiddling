@@ -1,6 +1,11 @@
 import Test.Hspec
 import Tree
+import Shape
 
+rounded :: Coord -> Coord
+rounded (x,y) = (roundedFloat x, roundedFloat y)
+    where
+    roundedFloat n = (fromIntegral (round (n * 10000))) / 10000
 main = hspec $ do
     describe "a tree" $ do
         it "can be nil" $ do
@@ -31,5 +36,19 @@ main = hspec $ do
                         (tree 6 nil nil)
                         (tree 7 nil nil))
             
-
-
+    describe "a shape" $ do
+        let s = shape [(0,0), (1,0), (1,1)]
+        it "is a list of coords" $ do
+            coords s  `shouldBe` [(0,0), (1,0), (1,1)]
+        it "can be translated" $ do
+            let s' = translate (-2,4) s
+            coords s'  `shouldBe` [(-2,4),(-1,4),(-1,5)]
+        it "can be rotated around a point" $ do
+            let s = shape [(0,0),(1,0),(1,1)]
+            let s'  = rotate (pi/2) (0,0) s
+            let s'' = rotate (-pi/2) (0,0) s
+            map rounded (coords s') `shouldBe` [(0,0),(0,1),(-1,1)]
+            map rounded (coords s'') `shouldBe` [(0,0),(0,-1),(1,-1)]
+        it "can be scaled on x and y" $ do
+            let s' = scale (2,0.5) s
+            coords s'  `shouldBe` [(0,0), (2,0), (2,0.5)]
