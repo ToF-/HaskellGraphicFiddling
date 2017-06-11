@@ -1,6 +1,7 @@
 import Test.Hspec
 import Tree
 import Shape
+import Pythagore
 
 rounded :: Coord -> Coord
 rounded (x,y) = (roundedFloat x, roundedFloat y)
@@ -38,7 +39,7 @@ main = hspec $ do
             
     describe "a shape" $ do
         let s = shape [(0,0), (1,0), (1,1)]
-        it "is a list of coords" $ do
+        it "has a list of coords" $ do
             coords s  `shouldBe` [(0,0), (1,0), (1,1)]
         it "can be translated" $ do
             let s' = translate (-2,4) s
@@ -52,3 +53,10 @@ main = hspec $ do
         it "can be scaled on x and y" $ do
             let s' = scale (2,0.5) s
             coords s'  `shouldBe` [(0,0), (2,0), (2,0.5)]
+
+    describe "pythShape" $ do
+        it "creates a shape from a position, an angle, a length and an new angle" $ do
+            let s = pythShape (1,2) 0 1 (pi/4)
+            let t = pythShape (0,0) (pi/2) 1 (pi/4)
+            map rounded (coords s) `shouldBe` [(1,2),(2,2),(2,3),(1.5,3.5),(1,3)]
+            map rounded (coords t) `shouldBe` [(0,0),(0,1),(-1,1),(-1.5,0.5),(-1,0)]

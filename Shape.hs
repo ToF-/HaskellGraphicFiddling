@@ -1,4 +1,4 @@
-module Shape (Shape, Coord, shape, coords, translate, rotate, scale) where
+module Shape (Shape, Coord, Angle, shape, coords, translate, rotate, scale) where
 
 type Coord = (Float, Float)
 type Angle = Float
