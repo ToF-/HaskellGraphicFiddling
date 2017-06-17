@@ -1,6 +1,10 @@
 import Graphics.UI.GLUT
 import Shapes
+import PythagoreTree
+import Tree
 
+
+tree = pythagoreTree (fromList [0,0,0,0,0,0,0]) (-0.5,-1.5) 0 1
 main :: IO ()
 main = do
     getArgsAndInitialize
@@ -22,7 +26,7 @@ display = do
     flush
     where
     drawShape :: Shape -> IO ()
-    drawShape (Shape coords) = renderPrimitive Polygon (vertices2 coords)
+    drawShape (Shape coords) = renderPrimitive LineLoop (vertices2 coords)
     drawShape (Rotate a s)   = preservingMatrix $ do
         rotate a $ Vector3 0 0 1
         drawShape s
@@ -35,10 +39,9 @@ display = do
     drawShape (Shapes ss) = mapM_ drawShape ss 
 
     shape :: Shape
-    shape = Shapes [
-        Scale 0.4 $ Translate (-0.5,-1.5) $ Rotate 30 $ Shape [(0,0),(1,0),(1,1),(0.5,1.5),(0,1)],
-        Rotate (-30) $ Shape [(0,0),(1,0),(1,1),(0.5,1.5),(0,1)]]
+    shape = Shapes $ toList tree 
 
     vertices2 = mapM_ vertex2
 
     vertex2 (x,y) = vertex $ Vertex2 x y
+
